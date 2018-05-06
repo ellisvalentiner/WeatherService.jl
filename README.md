@@ -1,5 +1,7 @@
 # WeatherService.jl
 
+Web service to accept a zipcode and return geocoding and forecast data, using the Google Maps and Dark Sky APIs.
+
 To start the service:
 
 ```sh
