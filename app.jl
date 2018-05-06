@@ -1,18 +1,26 @@
 using GoogleMaps
 using DarkSky
 using HttpServer
-using HttpCommon
 using JSON
 
+function get_latlng(x::Dict)
+    latlng = x["results"][1]["geometry"]["location"];
+    return (latlng["lat"], latlng["lng"])
+end
+
 http = HttpHandler() do req::Request, res::Response
-    m = match(r"^/zipcode/(\d+)/?$",req.resource)
+    m = match(r"^/zipcode/(\d+)/?$", req.resource)
     if m == nothing return Response(404) end
     input = String(m.captures[1]);
-    response = geocode(input);
-    latlng = response["results"][1]["geometry"]["location"];
-    response = forecast(latlng["lat"], latlng["lng"]);
-    x = JSON.json(response.currently)
-    resp = Response(x)
+    location = geocode(input);
+    (lat, lng) = get_latlng(location);
+    weather = forecast(lat, lng);
+    d = Dict()
+    for f in fieldnames(weather)
+        d[f] = getfield(weather, f)
+    end
+    response = Dict("location" => location, "weather" => d)
+    resp = Response(JSON.json(response))
     resp.headers["Content-Type"] = "application/json"
     return resp
 end
