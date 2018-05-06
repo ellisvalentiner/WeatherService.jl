@@ -1,20 +1,20 @@
-***REMOVED***
+# WeatherService.jl
 
-***REMOVED***
+To start the service:
 
-***REMOVED***
-***REMOVED***
-***REMOVED***
+```sh
+$ julia app.jl
+```
 
-***REMOVED***
+or using Docker:
 
-***REMOVED***
-***REMOVED***
-docker run -p 8000:8000 -e ***REMOVED*** -e ***REMOVED*** weatherservice
-***REMOVED***
+```sh
+docker build -t weatherservice .
+docker run -p 8000:8000 -e DARKSKY_API_KEY=XXXXX -e GOOGLE_MAPS_KEY=XXXXX weatherservice
+```
 
-***REMOVED***
+To make a request:
 
-***REMOVED***
-***REMOVED***
-***REMOVED***
+```sh
+$ curl localhost:8000/zipcode/48108
+```
